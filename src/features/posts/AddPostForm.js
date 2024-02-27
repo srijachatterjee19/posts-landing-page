@@ -18,7 +18,9 @@ const AddPostForm = () => {
         // dispatch postAdded action
         if (title && content) {
             dispatch(
-                postAdded({title, content, id: nanoid()})
+                // only pass in title and content, the rest is handled by the prepare callback function in postSlice.js
+                // this component doesn't need to know the structure of the slice and we can just send data we need to send
+                postAdded(title, content)
             )
             //then reset title and content
             setTitle('')

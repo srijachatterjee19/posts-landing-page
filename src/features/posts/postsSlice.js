@@ -1,6 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { sub } from 'date-fns';
-
 
 const initialState = [
     {
@@ -35,11 +34,23 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        postAdded(state,action) {
+        postAdded : {
+            reducer(state,action) {
             // only works inside of createSlice
             state.push(action.payload);
+        },
+        // prepare callback for above reducer function
+        prepare(title, content, userId) {
+            return {
+                payload: {
+                    id: nanoid(),
+                    title,
+                    content
+                }
+            }
         }
     }
+}
 })
 
 export const selectAllPosts = (state) => state.posts;
