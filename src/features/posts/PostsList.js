@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectAllPosts } from "./postsSlice";
 
-
 const PostsList = () => {
  
  // get all the posts present in our state
