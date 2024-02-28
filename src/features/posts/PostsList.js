@@ -1,16 +1,24 @@
 import { useSelector } from "react-redux";
 import { selectAllPosts } from "./postsSlice";
+import PostAuthor from "./PostAuthor";
+import TimeAgo from "./TimeAgo";
 
 const PostsList = () => {
  
  // get all the posts present in our state
  const posts = useSelector( selectAllPosts );
 
+ 
+
  const renderedPosts = posts.map(post => (
     <article key={ post.id }>
         <h3>{ post.title }</h3>
         {/* get first 100 characters from content */}
         <p>{ post.content.substring(0,100) }</p>
+        <p className="postCredit">
+            <PostAuthor userId = {post.userId} />
+            <TimeAgo timestamp = {post.date} />
+       </p>
     </article>
  ));
 
