@@ -1,17 +1,21 @@
 import { useState } from "react";
-import { UseDispatch, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit"; //generate random id 
 import { postAdded } from "./postsSlice";
-
+import { selectAllUsers } from "../users/usersSlice";
 
 const AddPostForm = () => {
     const dispatch = useDispatch();
     // title and component don't need to be added to global state, hence we utilise useState hooks for the component
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const [userId, setUserId] = useState('')
+
+    const users = useSelector(selectAllUsers)
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onContentChanged = e => setContent(e.target.value)
+    const onAuthorChanged = e => setUserId(e.target.value)
 
     const onSavePostClicked = ()  => {
         // if title and content exist
@@ -20,13 +24,23 @@ const AddPostForm = () => {
             dispatch(
                 // only pass in title and content, the rest is handled by the prepare callback function in postSlice.js
                 // this component doesn't need to know the structure of the slice and we can just send data we need to send
-                postAdded(title, content)
+                postAdded(title, content,userId)
             )
             //then reset title and content
             setTitle('')
             setContent('')
         }
     }
+
+    //to make sure the title,content and userId are valid
+    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+
+    // the user id is sent as value which is grabbed by onAuthorChanged
+    const usersOptions = users.map(user => (
+        <option key={user.id} value={user.id}>
+            {user.name}
+        </option>
+    ))
 
     return (
         <section> 
@@ -40,6 +54,11 @@ const AddPostForm = () => {
                     value={title}
                     onChange={onTitleChanged}
                 />
+                <label htmlFor="postAuthor">Author:</label>
+                <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+                    <option value=""></option>
+                    {usersOptions}
+                </select>
                 <label htmlFor="postContent">Content:</label>
                 <textarea
                     id="postContent"
@@ -50,7 +69,7 @@ const AddPostForm = () => {
                  <button
                     type="button"
                     onClick={onSavePostClicked}
-                    // disabled={!canSave}
+                    disabled={!canSave}
                 >Save Post</button>
             </form>
         </section>
