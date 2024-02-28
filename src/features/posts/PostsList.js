@@ -8,9 +8,10 @@ const PostsList = () => {
  // get all the posts present in our state
  const posts = useSelector( selectAllPosts );
 
- 
+// localeCompare converts date string, sort by date and create a shallow copy of the array
+ const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date)) 
 
- const renderedPosts = posts.map(post => (
+ const renderedPosts = orderedPosts.map(post => (
     <article key={ post.id }>
         <h3>{ post.title }</h3>
         {/* get first 100 characters from content */}
