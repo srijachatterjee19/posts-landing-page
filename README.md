@@ -28,3 +28,7 @@ Make sure you have Node.js and npm installed on your machine.
  ```bash
 npm start
 ```
+
+### Demo
+
+<img width="726" alt="image" src="https://github.com/srijachatterjee19/posts-landing-page/assets/84346422/bd831220-53ab-472e-a67a-fe203ea80460">
